@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//플레이어와 상호작용가능한 오브젝트들에 붙여서 사용
-//상호작용 범위를 지정할 boxcollider 필요
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///플레이어와 상호작용가능한 오브젝트들에 붙여서 사용합니다.
+///PlayerInteraction 컴포넌트를 가지고 있는 모든 오브젝트들은 
+///캐릭터가 가까이오면 상호작용키를 보여주고
+///해당 키가 눌리면 AddKeydownAction()함수를 이용해 미리
+///설정된 함수가 실행되도록 합니다.
+///상호작용 범위를 지정할 boxcollider가 객체에 필요합니다.
+/////////////////////////////////////////////////////////////////////
+
 public class PlayerInteraction : MonoBehaviour
 {
     public LayerMask PlayerLayer;
 
+    //현재값
     [System.Serializable]
     public class CurrentValues
     {
@@ -17,17 +28,21 @@ public class PlayerInteraction : MonoBehaviour
     }
 
 
-
+    //캐릭터 상호작용 거리
     public CircleCollider2D Circlerange;
     //public BoxCollider2D Boxrange;
-    public float lastTime;
-    public KeyCode InteractionKey = KeyCode.F;
-    public CurrentValues current = new CurrentValues();
-    public delegate void KeyDownAction();
 
+    //마지막으로 체크한 시간
+    public float lastTime;
+    //상호작용 키
+    public KeyCode InteractionKey = KeyCode.F;
+    //현재 값
+    public CurrentValues current = new CurrentValues();
+    //상호작용 액션
+    public delegate void KeyDownAction();
+    //캐릭터가 범위 안에 들어왔을때, 나갔을때 액션
     public delegate void EnterAction();
     public delegate void OutAction();
-
 
     public KeyDownAction keydownaction;
     public EnterAction enteraction;
@@ -36,7 +51,7 @@ public class PlayerInteraction : MonoBehaviour
     public GameObject EnterPopUp;
 
 
-
+    //액션 추가, 삭제
     public void AddOutAction(OutAction action)
     {
         this.outaction += action;
@@ -75,6 +90,7 @@ public class PlayerInteraction : MonoBehaviour
         this.keydownaction -= action;
     }
 
+    //주변에 플레이어가 있는지 확인한다.
     public void CheckPlayer()
     {
         
@@ -96,7 +112,6 @@ public class PlayerInteraction : MonoBehaviour
 
                 }
                 current.PlayerEnter = true;
-                //Debug.Log("플레이어 감지!");
             }
             else
             {
@@ -109,11 +124,11 @@ public class PlayerInteraction : MonoBehaviour
 
                 }
                 current.PlayerEnter = false;
-               // Debug.Log("플레이어 감지 못함!");
             }
         }
     }
     
+    //키 다운 감지
     public void CheckKeyDown()
     {
         if (current.PlayerEnter)
@@ -128,6 +143,7 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    //팝업을 보여주고 숨긴다.
     public void ShowPopUp()
     {
         if (EnterPopUp != null)
@@ -151,14 +167,7 @@ public class PlayerInteraction : MonoBehaviour
         AddOutAction(ClosePopUp);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-
-    // Update is called once per frame
     void Update()
     {
         CheckPlayer();

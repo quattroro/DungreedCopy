@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///던전 안에 존재하는 오브젝트
+/////////////////////////////////////////////////////////////////////
+///
 public class DungeonGear : MonoBehaviour
 {
     public enum GearDir { Right,Left};
@@ -37,19 +45,10 @@ public class DungeonGear : MonoBehaviour
     {
         if(NowSpin)
         {
-            //spinspeed *= Time.deltaTime;
-            //body.transform.rotation = Quaternion.Euler(new Vector3(0, 0, spinspeed));
             body.transform.Rotate(new Vector3(0, 0, spinspeed * Time.deltaTime));
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         GearSpin();

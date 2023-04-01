@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///맵들을 관리하는 매니저 입니다.
+///던전 씬에 들어왔을때 현재 스테이지에 따라 던전을 생성해주는 일을 합니다.
+/////////////////////////////////////////////////////////////////////
+
 public class MapManager : Singleton<MapManager>
 {
-    //private static MapManager _instance = null;
-
-    //public static MapManager Instance
-    //{
-    //    get
-    //    {
-                
-    //        return _instance;
-    //    }
-    //}
 
     public enum STAGE { Stage1, Stage2, Stage3, Stage4 ,StageMax };
     public enum ROOMTYPE { Start, Restaurant, Shop, End, Boss, NOMAL, MAX };
@@ -70,9 +71,6 @@ public class MapManager : Singleton<MapManager>
     }    
 
 
-
-
-
     public void LoadStagesToPrefabs(STAGE stage)
     {
         largeroom = Resources.LoadAll<GameObject>($"Prefabs/Map_Prefabs/MapPrefabs/{stage.ToString()}/Large");
@@ -100,33 +98,12 @@ public class MapManager : Singleton<MapManager>
                 if(rooms[x + (y * size)]!=null)
                 {
                     rooms[x + (y * size)]?.GetComponent<BaseStage>().Initsetting();
-                    //rooms[x + (y * size)].transform.position = new Vector3(transform.position.x + (x * 70), transform.position.y + ((y * 70) * -1));
                 }
                 
             }
         }
     }
 
-    public void StageSetting(List<GameObject> list)
-    {
-
-    }
-
-    //스테이지 세팅이 끝나면 시작
-    public void StageStart()
-    {
-
-    }
-
-    public void SetBossRoom()
-    {
-
-    }
-
-    public void TeleportRoom(int x,int y)
-    {
-
-    }
 
     public GameObject StageLoad(ROOMTYPE type)
     {
@@ -150,63 +127,23 @@ public class MapManager : Singleton<MapManager>
     }
 
 
-    //public void StageLoad(StageData[] arr, int size)
-    //{
-    //    for (int i = 0; i < size * size; i++)
-    //    {
-    //        int count = 0;
-    //        if (arr[i] != null)
-    //        {
-    //            if (arr[i].RightMap != null) count++;
-    //            if (arr[i].LeftMap != null) count++;
-    //            if (arr[i].UpMap != null) count++;
-    //            if (arr[i].DownMap != null) count++;
-    //            //주변에 존재하는 방의 개수를 가지고 방의 크기를 결정한다.
-
-    //            //100% 큰방
-    //            if (count >= 4)
-    //            {
-
-    //            }
-    //            else if (count >= 3)//70%중간방,30%큰방
-    //            {
-
-    //            }
-    //            else if (count >= 2)//길이 두개있는방도 레스토랑과 상점방이 없으면 번호가 빠른 방이 레스토랑과 상점방으로 뽑힌다.
-    //            {
-
-    //            }
-    //            else//길이 하나있는방은 레스토랑 또는 상점방이 된다.
-    //            {
-
-    //            }
-
-    //        }
-
-    //    }
-    //}
-
     public void InitSetting()
     {
         SpecialRoom = new GameObject[(int)ROOMTYPE.MAX];
     }
-    public void InitSetting(StageData[] arr, int size)
-    {
-        LinkedData = arr;
-        arrsize = size;
-        for(int i=0;i<size*size;i++)
-        {
-            if (arr[i] != null)
-            {
+    //public void InitSetting(StageData[] arr, int size)
+    //{
+    //    LinkedData = arr;
+    //    arrsize = size;
+    //    for(int i=0;i<size*size;i++)
+    //    {
+    //        if (arr[i] != null)
+    //        {
 
-            }
-        }
+    //        }
+    //    }
 
-
-
-
-
-    }
+    //}
 
     //현재 만들어져 있는  스테이지를 모두 없애주고 새로운 방들을 만들어 준다.
     public void NextStage()
@@ -216,7 +153,6 @@ public class MapManager : Singleton<MapManager>
         MapSpawner.Instance.SpawnStart(NowFloor);
     }
 
-    //오브젝트 풀링적용 예정
     public void DestroyRooms(GameObject[] stage)
     {
         for (int i = 0; i < stage.Length; i++)
@@ -230,24 +166,6 @@ public class MapManager : Singleton<MapManager>
         InitSetting();
         NowStage = STAGE.Stage1;
         NowFloor = 1;
-        //if(_instance==null)
-        //{
-        //    _instance = this;
-        //    DontDestroyOnLoad(this.gameObject);
-        //}
-        //else
-        //{
-        //    Destroy(this.gameObject);
-        //}
-        
-        //LoadStagesToPrefabs(STAGE.Stage1);
     }
 
-    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

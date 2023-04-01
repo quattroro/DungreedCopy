@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///메인 마을 에서 뒤에 백그라운드 배경이 캐릭터 이동에 따라 이동하도록 해줍니다.
+///캐릭터가 모두 이동한 뒤에 따라서 이동하도록 하기 위해 LateUpdate에서 동작해 줍니다.
+/////////////////////////////////////////////////////////////////////
+
+
+
 public class BackGoundMove : MonoBehaviour
 {
     public BaseStage basestage;
@@ -31,24 +42,13 @@ public class BackGoundMove : MonoBehaviour
         playerpos = basestage.playerobj.transform;
         
         renderersize = this.GetComponent<SpriteRenderer>().bounds.size;
-        
-        //renderercenter = this.GetComponent<SpriteRenderer>().center
     }
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if (basestage.NowPlayerEnter == true)
         {
-            //Vector3 bottomlef = new Vector3(transform.position.x - renderersize.x, transform.position.y - renderersize.y, 0f);
-            //Vector3 topright = new Vector3(transform.position.x + renderersize.x, transform.position.y + renderersize.y, 0f);
 
             if (playerpos.position != LastPlayerPos)
             {

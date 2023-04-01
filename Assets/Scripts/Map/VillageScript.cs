@@ -3,7 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///시작 마을 맵입니다.
+///초기화때 맵 정보를 읽어와서 미니맵에 넘겨주는 역할을 합니다.
+/////////////////////////////////////////////////////////////////////
 public class VillageScript : MonoBehaviour
 {
     //public BoxCollider2D ;
@@ -126,15 +132,8 @@ public class VillageScript : MonoBehaviour
 
         LoadMapInfo();
 
-        //Debug.Log("sss1");
         Minimap.Instance.MinimapInfoSetting(Roominfo, MaxX, MaxY, bottomleft, topright, playerpos);
-        //Debug.Log("sss2");
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        //CheckDungeonStart();
-    }
 }

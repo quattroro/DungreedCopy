@@ -3,7 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//맵 위에 컴포넌트로 붙어서 
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///미니맵 입니다.
+///미니맵도 타일들로 이루어져 있습니다. 월드공간을 미니맵의 사이즈에 맞게
+///축소시키고 화면 크기에 맞게 컬링을 진행해서 보여줍니다.
+///모든 타일 정보들은 MapManager에서 초기화때 미니맵에 넘겨줍니다.
+/////////////////////////////////////////////////////////////////////
+
 public class Minimap : Singleton<Minimap>
 {
     //캔버스에 붙여주면 알아서 작동하도록
@@ -105,8 +115,6 @@ public class Minimap : Singleton<Minimap>
     {
         TileObj = Resources.Load<MinimapTile>("Prefabs/Map_Prefabs/MinimapPrefabs/MinimapTile");
         panel = Resources.Load<GameObject>("Prefabs/Map_Prefabs/MinimapPrefabs/MinimapPanel");
-        //GameObject obj = GameObject.Instantiate(Empty)
-        //cam = GetComponentInChildren<Camara>();
     }
 
     //맵정보가 들어오지 않으면 미니맵을 표시하지 않는다. 맵정보가 들어오면 그때부터 미니맵을 보여주기 시작한다

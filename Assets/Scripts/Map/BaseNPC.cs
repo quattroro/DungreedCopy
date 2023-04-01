@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///모든 NPC들의 기본 클래스
+///PlayerInteraction 컴포넌트를 가지고 있는 모든 오브젝트들은 
+///캐릭터가 가까이오면 상호작용키를 보여주고
+///해당 키가 눌리면 AddKeydownAction()함수를 이용해 미리
+///설정된 함수가 실행되도록 합니다.
+/////////////////////////////////////////////////////////////////////
+
 public class BaseNPC : MonoBehaviour
 {
     public string NPCName;
@@ -43,31 +56,30 @@ public class BaseNPC : MonoBehaviour
     }
 
 
-    //현재 퀘스트가 있으면 퀘스트팝업을 띄우고 유저가 가까이 오면 f 상포작용 팝업을 띄운다.
-    
-    public void ShowPopUp()
-    {
-        if (EnterPopUp != null)
-            EnterPopUp.SetActive(true);
-    }
+    //해당 기능들은 PlayerInteraction 으로 이전
+    ////현재 퀘스트가 있으면 퀘스트팝업을 띄우고 유저가 가까이 오면 f 상포작용 팝업을 띄운다.
+    //public void ShowPopUp()
+    //{
+    //    if (EnterPopUp != null)
+    //        EnterPopUp.SetActive(true);
+    //}
 
-    public void ClosePopUp()
-    {
-        if (EnterPopUp != null)
-            if (EnterPopUp.activeSelf)
-                EnterPopUp.SetActive(false);
+    //public void ClosePopUp()
+    //{
+    //    if (EnterPopUp != null)
+    //        if (EnterPopUp.activeSelf)
+    //            EnterPopUp.SetActive(false);
 
-    }
+    //}
 
-    public void ShowQuestPopUp()
-    {
-        if (QuestPopUp != null)
-            QuestPopUp.SetActive(true);
-    }
+    //public void ShowQuestPopUp()
+    //{
+    //    if (QuestPopUp != null)
+    //        QuestPopUp.SetActive(true);
+    //}
 
     public void ShowKeyDownPopUp()
     {
-        Debug.Log($"{NPCName}실행");
 
         DialogBox.SetActive(true);
         DialogBox.GetComponent<Dialog>().findNpc(this);
@@ -89,15 +101,4 @@ public class BaseNPC : MonoBehaviour
         m_Btn_Action = Btn.GetComponent<Button>();
     }
 
-    //// Start is called before the first frame update
-    //virtual void Start()
-    //{
-
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-
-    //}
 }

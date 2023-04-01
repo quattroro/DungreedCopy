@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///마을 씬에서 던전씬으로 이동 해줍니다.
+///이동 하기 전에 캐릭터의 정보를 한번 저장해줍니다.
+/////////////////////////////////////////////////////////////////////
+
+
 public class DungeonEnter : MonoBehaviour
 {
     public LayerMask playerlayer;
@@ -12,17 +21,16 @@ public class DungeonEnter : MonoBehaviour
 
     public GameObject playerobj = null;
 
-    // Start is called before the first frame update
     void Start()
     {
         DungeonEat.SetActive(false);
     }
 
+    //캐릭터가 텔레포트 지점으로 오면 애니메이션 객체를 출력해주고 던전 씬으로 이동 해준다.
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Debug.Log("플레이어 들어옴");
             DungeonEat.SetActive(true);
             Vector3 temp = new Vector3(collision.transform.position.x, DungeonEat.transform.position.y);
             DungeonEat.transform.position = temp;
@@ -33,17 +41,18 @@ public class DungeonEnter : MonoBehaviour
         }
     }
 
+    //던전 씬으로 이동 해준다.
     public void EnterDungeon()
     {
         if (playerobj != null)
         {
-            Debug.Log("던전으로");
             DontDestroyOnLoad(playerobj);
             SceneManager.LoadScene("Main_Dungeon_Scene");
         }
 
     }
 
+    //캐릭어 아이템 정보 저장
     void Save()
     {
         Player player = playerobj.GetComponent<Player>();
@@ -78,9 +87,9 @@ public class DungeonEnter : MonoBehaviour
         }
     }
 
+    //던전이 이동될때 씬이 이동되기 때문에 이동하기 전에 캐릭터의 정보를 저장해 준다.
     void Save_Inventory_Info()
     {
-        Debug.Log("저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장저장");
         Save();
 
         Player player = playerobj.GetComponent<Player>();
@@ -132,10 +141,4 @@ public class DungeonEnter : MonoBehaviour
         PlayerPrefs.SetString("accSlotsList", accSlotsArr);
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

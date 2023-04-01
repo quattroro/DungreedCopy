@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///던전 안에서의 빠른이동 토템
+///실행하면 던전 전체 지도가 표시되고 
+///던전 안에 있는 활성화 되어있는 다른 텔레포터를 클릭하면 
+///해당 방으로 순간이동 합니다.
+/////////////////////////////////////////////////////////////////////
+
 public class DungeonTeleporter : MonoBehaviour
 {
     public Animator animator;
@@ -50,14 +62,6 @@ public class DungeonTeleporter : MonoBehaviour
             //stage.Teleporter.TeleportHere(/**/);
         }
     }
-
-
-    //public void TeleporterActive()
-    //{
-    //    //animator.SetTrigger("TeleporterActive");
-    //}
-
-
     
 
     //애니메이션 끝나고 실행 이건 
@@ -108,8 +112,6 @@ public class DungeonTeleporter : MonoBehaviour
     }
 
 
-
-
     public void ShowAllMapUI()
     {
         if (DungeonMapUI.Instance.gameObject.activeSelf == true)
@@ -122,9 +124,6 @@ public class DungeonTeleporter : MonoBehaviour
         }
     }
 
-
-    
-
     private void Awake()
     {
         interaction = GetComponent<PlayerInteraction>();
@@ -133,15 +132,4 @@ public class DungeonTeleporter : MonoBehaviour
         interaction.AddKeydownAction(ShowAllMapUI);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

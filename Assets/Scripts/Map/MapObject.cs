@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
+
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///맵에 있는 박스나, 책상 같은 작은 오브젝트들 입니다.
+///캐릭터나 몬스터와 충돌하면 작은 조각들로 부서지고 
+///일정 시간 뒤에 사라집니다.
+/////////////////////////////////////////////////////////////////////
+
 public class MapObject : MonoBehaviour
 {
     public enum ObjectType { Destructible, Indestructible };//파괴가능/파괴 불가능
@@ -27,7 +38,6 @@ public class MapObject : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("1");
         if(SettingOver)
         {
             if (!isdestroy)
@@ -49,7 +59,6 @@ public class MapObject : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("2");
         if (SettingOver)
         {
             if (!isdestroy)
@@ -58,7 +67,6 @@ public class MapObject : MonoBehaviour
                 {
                     for (int i = 0; i < particlesobj.Count; i++)
                     {
-                        Debug.Log("활성화");
                         particlesobj[i].SetActive(true);
                         particlesobj[i].transform.position = this.transform.position;
                         Destroy(particlesobj[i], 10f);
@@ -75,7 +83,6 @@ public class MapObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("3");
         if (SettingOver)
         {
             if (!isdestroy)
@@ -84,7 +91,6 @@ public class MapObject : MonoBehaviour
                 {
                     for (int i = 0; i < particlesobj.Count; i++)
                     {
-                        Debug.Log("활성화");
                         particlesobj[i].SetActive(true);
                         particlesobj[i].transform.position = this.transform.position;
                         Destroy(particlesobj[i], 10f);
@@ -129,17 +135,5 @@ public class MapObject : MonoBehaviour
         coll = GetComponent<BoxCollider2D>();
         InitSetting();
 
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-            
     }
 }

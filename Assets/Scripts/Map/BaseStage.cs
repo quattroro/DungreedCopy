@@ -4,71 +4,75 @@ using UnityEngine;
 using System;
 using UnityEngine.Tilemaps;
 
+
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///모든 던전의 방들의 가장 최상위 베이스클래스
+///방의 모든 요소들(문, 함정, 몬스터 스폰 포인트, 상자스폰, 빠른이동 비석)을 관리하고
+///방이 시작되고 클리어되는 것에 맞춰서 모든 요소들을 통제 합니다.
+/////////////////////////////////////////////////////////////////////
+
+
+
 public class BaseStage : MonoBehaviour
 {
-    //public enum Direction { Left, Right, Up, Down,DIREC };
-
-    //public enum MapType { NOMAL, RESTAURANT, SHOP, MAPTYPEMAX};
     public enum TileElement { BackGround, Wall, Moveable,Door, ElementMax };
 
     public enum Chests { Stash, Rare, Yellow, Gold, Boss,ChestMax };
 
+    //던전에서 생성 가능한 상자들 오브젝트
     public GameObject[] ChestPrefabs;
 
+    //자신의 모든 타일들을 벽인지, 배경인지, 빈 공간인지에 따라서 가지고 있는다.
     public Tilemap[] tiles;
 
+    //모든 문
     public Door[] door;
 
+    //모든 몬스터 스폰 포인트
     public MonsterSpawnPoint[] spawnpoint;
 
+    //모든 상자들
     public List<GameObject> ChestList;
 
-    [SerializeField]
+    //각 방들 연결 정보
     public LinkedData StageLinkedData;
 
     //링크드데이터에 따라서 문이 2개 이상이면 일정 확률로 중간크기, 3개이상이면 일정확률로 큰방, 4개 이상이면 무조건 큰방 등등 의 처리를 해서 최종적으로 방을 생성해준다.
     //public enum STAGECLASS { SMALL, MEDIUM, LARGE };
-
     public MapManager.ROOMTYPE type;
 
     public MapManager.ROOMCLASS sizeclass;
 
-
+    //방의 위치정보
     public Transform StartPos;
     public Vector3Int StartIndex;
     public Transform EndPos;
     public Vector3Int EndInedex;
     //public Rect RoomArea;
 
+    //방의 다양한 변수들
     public GameObject playerobj;
-
-
     public MapManager.STAGE NowStage;
-
     public int NowFloor = 0;
-
-    //
     public int StageNum = -1;
-
     //방이 잠겼는지 아닌지 방에 스폰된 몬스터들을 모두 잡고 나면 락이 풀린다.
     public bool RoomLocked;
-
-
     public Vector2 RoomSize;
     public Transform bottomleft;
     public Transform topright;
     public Rect RoomActiveArea;
     public Rect RoomArea;
     public Vector3 CenterPos = new Vector3(-3000f, -3000f);
-
-
     public int MaxX;
     public int MaxY;
 
     public int[] Roominfo;
 
+    //방 상태 변수&프로퍼티들
     public bool RoomIsClear;
-
     public bool NowSpawned;
     [SerializeField]
     private bool isteleporter;
@@ -128,8 +132,6 @@ public class BaseStage : MonoBehaviour
             isteleporter = value;
             
             Teleporter.IsActive = isteleporter;
-            //Teleporter.gameObject.SetActive(IsTeleporter);
-
         }
     }
 
@@ -235,12 +237,6 @@ public class BaseStage : MonoBehaviour
 
     }
 
-    //문들을 돌면서 
-    public void LoadDoorInfo()
-    {
-
-    }
-
     public bool IsDoorExist(Door.DoorType type)
     {
         //bool flag = false;
@@ -255,16 +251,6 @@ public class BaseStage : MonoBehaviour
 
     }
 
-
-    public void MonsterSetting()
-    {
-
-    }
-
-    public void RoomAreaSetting()
-    {
-
-    }
 
     public void LoadMapInfo()
     {
@@ -382,14 +368,13 @@ public class BaseStage : MonoBehaviour
             }
         }
     }
-
+    //플레이어가 방에 들어왔을때 방을 시작 해준다.
     public void RoomStart()
     {
         
         if (spawnpoint.Length != 0 && RoomIsClear == false)
         {
             NowSpawned = true;
-            //Debug.Log("플레이영역에들어옴");
             for (int i = 0; i < door.Length; i++)
             {
                 if (door[i] != null)
@@ -403,11 +388,13 @@ public class BaseStage : MonoBehaviour
                 
             }
 
+            //텔레포트도 비활성화 시켜준다.
             if (IsTeleporter)
             {
-                //IsTeleporter = false;
                 Teleporter.IsActive = false;
             }
+
+            //몬스터들을 스폰 시켜준다.
             if (spawnpoint[0].type != SpawnManager.MonsterType.Boss)
             {
                 for (int j = 0; j < spawnpoint.Length; j++)
@@ -421,8 +408,11 @@ public class BaseStage : MonoBehaviour
                 BossManager.Instance.Boss_Start = true;
             }
             Enm_Hp_Bar_Manager.Instance.UpadateList();
+            //몬스터에 정보를 넘겨준다.
             Minimap.Instance.CreateMonsterTile(SpawnManager.Instance.NowSpawndList);
         }
+
+        //스폰될 몬스터가 없는 방은 바로 클리어 해준다.
         if (spawnpoint.Length <= 0)
         {
             RoomIsClear = true;
@@ -430,7 +420,7 @@ public class BaseStage : MonoBehaviour
 
     }
 
-    //다시 텔레포트랑 문들을 활성화 시켜주고 방의 클래스에 따라 확률로 상자를 스폰해준다.
+    //방이 클리어 되었을때 다시 텔레포트랑 문들을 활성화 시켜주고 방의 클래스에 따라 확률로 상자를 스폰해준다.
     public void RoomClear()
     {
         if(!RoomIsClear)
@@ -456,7 +446,7 @@ public class BaseStage : MonoBehaviour
         
     }
 
-
+    //방이 클리어 되었을때 해당 방의 타입과 크기에 따라 상자를 스폰 해준다. 
     public void ChestSpawn()
     {
         int per; //해당 방에 스폰될 확률
@@ -543,13 +533,6 @@ public class BaseStage : MonoBehaviour
 
 
 
-
-    private void Start()
-    {
-        //Initsetting();
-        
-
-    }
 
     private void Awake()
     {

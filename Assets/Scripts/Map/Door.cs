@@ -4,12 +4,19 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 
-//base
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////
+///조민익 작업
+///던전의 문 객체
+///문은 이어져 있는 다른 던전방의 정보를 가지고 있습니다
+///문이 활성화 되어 있는 상태에서 캐릭터가 문의 트리거에 접촉하면
+///해당 방의 이어져 있는 문으로 위치가 이동됩니다.
+/////////////////////////////////////////////////////////////////////
+///
 public class Door : MonoBehaviour
 {
     public enum DoorType { Up, Down, Right, Left, DoorMax };
-
-    //public GameObject[] DoorPrefabs;
 
     public Tilemap WallTilemap;
     public Tilemap BackTilemap;
@@ -69,15 +76,11 @@ public class Door : MonoBehaviour
                 if (nowdoorlocked)
                 {
                     Doorparticle.gameObject.SetActive(false);
-                    //SealStoneAni.SetTrigger("SealClose");
                     StartCoroutine(SealStoneActive());
                 }
                 else
                 {
-                    //SealStoneAni.SetTrigger("SealOpen");
                     StartCoroutine(SealStoneInactive());
-                    //SealStoneAni.gameObject.SetActive(false);
-                    //Invoke("SealStoneActive", 1f);
                     Doorparticle.gameObject.SetActive(true);
                 }
             }
@@ -85,7 +88,7 @@ public class Door : MonoBehaviour
     }
 
 
-
+    //애니메이션에 맞춰 자연스러운 개폐를 위해 코루틴 함수로 구현 하였슴
     IEnumerator SealStoneActive()
     {
         //SealStoneAni.gameObject.SetActive(true);
@@ -98,9 +101,10 @@ public class Door : MonoBehaviour
             SealStoneAni.gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
         SealStoneAni.SetTrigger("SealClose");
-        yield return new WaitForSeconds(0);
+        yield return null;
     }
 
+    //애니메이션에 맞춰 자연스러운 개폐를 위해 코루틴 함수로 구현 하였슴
     IEnumerator SealStoneInactive()
     {
         //SealStoneAni.gameObject.SetActive(false);
@@ -111,7 +115,7 @@ public class Door : MonoBehaviour
     }
 
 
-    //문이 생성될 타일맵의 인덱스번호를 넘겨주면 해당 인덱스부터 문을 생성한다.
+    //문이 생성될 타일맵의 인덱스번호를 넘겨주면 해당 인덱스의 위치에서 문을 생성한다.
     public void CreateDoor(GameObject tilemaps)
     {
         ParentStage = tilemaps;
@@ -137,29 +141,18 @@ public class Door : MonoBehaviour
         if(this.type==DoorType.Up)
         {
             NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.UpMap;
-            //string name = tilemaps.GetComponent<BaseStage>().StageLinkedData.UpMap.gameObject.name;
-            //NextRoom = GameObject.Find(name);
         }
         else if(this.type == DoorType.Down)
         {
             NextRoom= tilemaps.GetComponent<BaseStage>().StageLinkedData.DownMap;
-            //NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.DownMap;
-            //string name = tilemaps.GetComponent<BaseStage>().StageLinkedData.DownMap.gameObject.name;
-            //NextRoom = GameObject.Find(name);
         }
         else if (this.type == DoorType.Right)
         {
             NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.RightMap;
-            //NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.RightMap;
-            //string name = tilemaps.GetComponent<BaseStage>().StageLinkedData.RightMap.gameObject.name;
-            //NextRoom = GameObject.Find(name);
         }
         else if (this.type == DoorType.Left)
         {
             NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.LeftMap;
-            //NextRoom = tilemaps.GetComponent<BaseStage>().StageLinkedData.LeftMap;
-            //string name = tilemaps.GetComponent<BaseStage>().StageLinkedData.LeftMap.gameObject.name;
-            //NextRoom = GameObject.Find(name);
         }
 
         GetTileInfo(type);
@@ -171,15 +164,12 @@ public class Door : MonoBehaviour
                 Vector3Int index = new Vector3Int(x, y * -1, 0);
                 index = MainStartIndex + index;
 
-                //TileBase tile = WallTilemap.GetTile(index);
                 MainWallTilemap.SetTile(index, null);
 
-                //tile = BackTilemap.GetTile(index);
                 MainBackTilemap.SetTile(index, null);
 
                 if(MoveableTilemap!=null)
                 {
-                    //tile = MoveableTilemap.GetTile(index);
                     MainMoveableTilemap.SetTile(index, null);
                 }
             }
@@ -187,13 +177,9 @@ public class Door : MonoBehaviour
 
         BaseStage stagedata = tilemaps.GetComponent<BaseStage>();
         SetStageDoorInfo();
-        //if (type == DoorType.DOWN) NextRoom = stagedata.StageLinkedData.DownMap;
-        //if (type == DoorType.DOWN)
-        // if (type == DoorType.DOWN)
-        //if (type == DoorType.DOWN)
     }
 
-    //문이 만ㄷ르어 지면 해당 문이 위치하는 맵의 정보에 문에대한 값을 넣어준다.
+    //문이 만들어 지면 해당 문이 위치하는 맵의 정보에 문에대한 값을 넣어준다.
     public void SetStageDoorInfo()
     {
         int x = 0;
@@ -221,12 +207,6 @@ public class Door : MonoBehaviour
                         if (a.transform.gameObject.layer == LayerMask.NameToLayer("Door"))
                         {
                             ParentStage.GetComponent<BaseStage>().Roominfo[index.x + (index.y * size)] = (int)BaseStage.TileElement.Door;
-                            //ParentStage.Roominfo[] = /*(int)TileElement.Door*/10;
-
-                            //GameObject obj = GameObject.Find("TestCircle");
-                            //GameObject copy = GameObject.Instantiate(obj);
-                            //copy.transform.position = a.point;
-                            //copy.name = "Door";
                             break;
                         }
 
@@ -255,12 +235,6 @@ public class Door : MonoBehaviour
                         if (a.transform.gameObject.layer == LayerMask.NameToLayer("Door")|| a.transform.gameObject.layer == LayerMask.NameToLayer("Moveable"))
                         {
                             ParentStage.GetComponent<BaseStage>().Roominfo[index.x + (index.y * size)] = (int)BaseStage.TileElement.Door;
-                            //ParentStage.Roominfo[] = /*(int)TileElement.Door*/10;
-
-                            //GameObject obj = GameObject.Find("TestCircle");
-                            //GameObject copy = GameObject.Instantiate(obj);
-                            //copy.transform.position = a.point;
-                            //copy.name = "Door";
                             break;
                         }
 
@@ -306,25 +280,18 @@ public class Door : MonoBehaviour
 
     }
 
-
+    //캐릭터가 문에 들어오면 이어져 있는 방으로 이동 시켜 준다.
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("트리거 들어옴");
         if(!NowDoorLocked)
         {
             if (collision.gameObject.layer == LayerMask.NameToLayer("Player"))
             {
                 SoundManager.Instance.bgmSource.PlayOneShot(SoundManager.Instance.UI_Audio[6]);
-                Debug.Log("NameToLayer 들어옴");
                 GoNextMap(collision.gameObject);
             }
         }
         
-        //if(collision.gameObject.layer == PlayerMask)
-        //{
-        //    Debug.Log("GoNextMap 들어옴");
-            
-        //}
     }
 
 
@@ -334,41 +301,22 @@ public class Door : MonoBehaviour
         GameObject temp = null;
         if (this.type==DoorType.Up)
         {
-            //string name = ParentStage.GetComponent<BaseStage>().StageLinkedData.UpMap.gameObject.name;
             temp = ParentStage.GetComponent<BaseStage>().StageLinkedData.UpMap;
-            //string name = temp.gameObject.name;
-
-            //NextRoom = GameObject.Find(name);
             pos = NextRoom.GetComponent<BaseStage>().door[(int)DoorType.Down];
         }
         else if (this.type == DoorType.Down)
         {
-            //string name = ParentStage.GetComponent<BaseStage>().StageLinkedData.DownMap.gameObject.name;
-
             temp = ParentStage.GetComponent<BaseStage>().StageLinkedData.DownMap;
-            //string name = temp.gameObject.name;
-
-            //NextRoom = GameObject.Find(name);
             pos = NextRoom.GetComponent<BaseStage>().door[(int)DoorType.Up];
         }
         else if (this.type == DoorType.Right)
         {
-            //string name = ParentStage.GetComponent<BaseStage>().StageLinkedData.RightMap.gameObject.name;
-
             temp = ParentStage.GetComponent<BaseStage>().StageLinkedData.RightMap;
-            //string name = temp.gameObject.name;
-
-            //NextRoom = GameObject.Find(name);
             pos = NextRoom.GetComponent<BaseStage>().door[(int)DoorType.Left];
         }
         else if (this.type == DoorType.Left)
         {
-            //string name = ParentStage.GetComponent<BaseStage>().StageLinkedData.LeftMap.gameObject.name;
-
             temp = ParentStage.GetComponent<BaseStage>().StageLinkedData.LeftMap;
-            //string name = temp.name;
-
-            //NextRoom = GameObject.Find(name);
             pos = NextRoom.GetComponent<BaseStage>().door[(int)DoorType.Right];
         }
         string name = temp.gameObject.name;
@@ -384,14 +332,8 @@ public class Door : MonoBehaviour
         
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        //DoorPrefabs = new GameObject[(int)(DoorType.Left + 1)];
-        //for(DoorType i=DoorType.Up;i<=DoorType.Left;i++)
-        //{
-        //    DoorPrefabs[(int)i] = Resources.Load<GameObject>($"Prefabs/DoorPrefabs/{i.ToString()}Door");
-        //}
         WallTilemap = null;
         BackTilemap = null;
         MoveableTilemap = null;
@@ -405,11 +347,5 @@ public class Door : MonoBehaviour
         Doorparticle = GetComponentInChildren<ParticleSystem>();
 
         NowDoorLocked = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
